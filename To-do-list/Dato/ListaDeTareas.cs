@@ -17,6 +17,11 @@ namespace To_do_list.Dato
             return lista;
         }
 
+        public List<TareaModelo> getList()
+        {
+            return this.lista;
+        }
+
         //metodo que agregar una tarea
         public void agregarTarea(TareaModelo tarea)
         {
@@ -24,10 +29,11 @@ namespace To_do_list.Dato
         }
        
         //metodo que elimina una tarea
+       
         public void eliminarTarea(TareaModelo tarea)
         {
-           lista.RemoveAll(tareaItem => tareaItem != tarea);
+           lista.RemoveAll(tareaItem => tareaItem._Titulo == tarea._Titulo);
         }
-
+        
     }
 }

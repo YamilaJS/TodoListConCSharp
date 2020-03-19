@@ -14,61 +14,38 @@ namespace To_do_list
 {
     public partial class Form1 : Form
     {
-        DataTable tabla;
         ListaDeTareas dato = new ListaDeTareas();
+        
+
         public Form1()
         {
             InitializeComponent();
-            Iniciar();
         }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            agregarTarea();
-            Iniciar();
+            TareaModelo modelo = agregarTarea();
+            this.mostrarLista(modelo._Titulo);
             crearNuevo();
-            mostrarLista();
         }
 
         private void btnNuevo_Click(object sender, EventArgs e)
         {
             crearNuevo();
         }
-        private void Iniciar()
+
+        private TareaModelo agregarTarea()
         {
-            tabla = new DataTable();
-            tabla.Columns.Add("Titulo");
-            tabla.Columns.Add("Descripción");
-            grilla.DataSource = tabla;
-        }
-        private void agregarTarea()
-        {
-            TareaModelo modelo = new TareaModelo("","") 
-            { 
-                _Titulo = txtTitulo.Text,
-                _Descripcion = txtDescripcion.Text
-            };
+            TareaModelo modelo = new TareaModelo(txtTitulo.Text, txtDescripcion.Text);
             dato.agregarTarea(modelo);
-            
+            return modelo;
         }
-        private void mostrarLista()
+        private void mostrarLista(string title)
         {
-            
-            foreach (var item in dato.mostrarLista())
-            {
-                DataRow fila = tabla.NewRow();
-                fila["Titulo"] = item._Titulo;
-                fila["Descripción"] = item._Descripcion;
-                tabla.Rows.Add(fila);
-            } 
+            cblLista.Items.Add(title);
         }
         private void crearNuevo()
         {
+            Console.WriteLine("hOLA");
             txtTitulo.Clear();
             txtDescripcion.Clear();
         }
@@ -81,6 +58,33 @@ namespace To_do_list
         private void btnEliminar_Click(object sender, EventArgs e)
         {
 
+            for (int i = 0; i < cblLista.Items.Count; i++)
+            {
+                
+                if (cblLista.GetItemChecked(i))
+                {
+                    this.dato.eliminarTarea(this.dato.getList()[i]);
+                }
+                
+            }
+
+
+            //////////// eSTO DEEBE ESTAR EN OTRA FUNCION
+            cblLista.Items.Clear();
+            for (int i = 0; i < this.dato.getList().Count; i++)
+            {
+                cblLista.Items.Add(this.dato.getList()[i]._Titulo);
+            }
+           
         }
+
+        private void txtTitulo_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+
+        
+        
     }
 }
